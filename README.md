@@ -6,7 +6,7 @@ Uma página interativa e fofa para fazer um convite para um date! Com animaçõe
 
 Você pode acessar a aplicação em:
 
-**[https://omurilomvp-cyber.github.io/Convite-especial/](https://omurilomvp-cyber.github.io/Convite-especial/)**
+**[https://omurilomvp-cyber.github.io/convite-especial/](https://omurilomvp-cyber.github.io/convite-especial/)**
 
 ## 🎨 Recursos
 
