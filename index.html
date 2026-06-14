@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Um convite especial...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b071a;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Simulação da tela de celular */
+        .phone-screen {
+            background: linear-gradient(180deg, #d33418 0%, #a21a06 100%);
+            width: 100%;
+            max-width: 400px;
+            height: 90vh;
+            max-height: 800px;
+            border-radius: 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 4px solid #1c1926;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Ilha dinâmica simulada no topo */
+        .island {
+            width: 110px;
+            height: 30px;
+            background-color: #000;
+            border-radius: 20px;
+            position: absolute;
+            top: 20px;
+        }
+
+        /* Efeito de corações flutuantes ao fundo */
+        .hearts-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #1a0f2e;
+            opacity: 0.6;
+            animation: floatUp 6s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0.8); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* Elementos principais */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            text-align: center;
+        }
+
+        .emoji {
+            font-size: 110px;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Caixa do convite */
+        .card {
+            background: rgba(36, 12, 12, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            border-radius: 24px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.4;
+            margin-bottom: 30px;
+        }
+
+        /* Botões */
+        .btn-container {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            position: relative;
+            height: 60px;
+            width: 100%;
+        }
+
+        .btn {
+            width: 100px;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-sim {
+            background: linear-gradient(135deg, #ff5e3a 0%, #ff2a68 100%);
+            color: white;
+        }
+
+        .btn-sim:active {
+            transform: scale(0.95);
+        }
+
+        .btn-nao {
+            background-color: #3d1c1c;
+            color: #ff6b6b;
+            position: absolute;
+            z-index: 10;
+        }
+
+        /* Tela de sucesso */
+        .success-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #110724;
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            color: white;
+        }
+
+        .success-screen h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #ff2a68;
+        }
+
+        .success-screen p {
+            font-size: 18px;
+            color: #bfa6e6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-screen">
+        <div class="island"></div>
+        
+        <!-- Corações gerados dinamicamente via JS ao fundo -->
+        <div class="hearts-bg" id="heartsBg"></div>
+
+        <div class="content" id="mainContent">
+            <!-- Emoji fofo e pidão simulando o da foto -->
+            <div class="emoji">🥺</div>
+            
+            <div class="card">
+                <h1>Você aceitaria ir à um date comigo?</h1>
+                
+                <div class="btn-container">
+                    <button class="btn btn-sim" onclick="aceitou()">SIM</button>
+                    <!-- O id="btnNao" permite o movimento pelo JavaScript -->
+                    <button class="btn btn-nao" id="btnNao" onmouseover="fugerir()" onclick="fugerir()">NÃO</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela escondida que aparece ao clicar no SIM -->
+        <div class="success-screen" id="successScreen">
+            <div style="font-size: 80px; margin-bottom: 20px;">🥰</div>
+            <h2>Ufa! Sabia que aceitaria!</h2>
+            <p>Me avisa no WhatsApp para combinarmos o dia e o lugar! ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        const btnNao = document.getElementById('btnNao');
+        const container = document.querySelector('.btn-container');
+
+        // Função que faz o botão "Não" fugir para um lugar aleatório dentro da caixinha
+        function fugerir() {
+            // Calcula limites para o botão não sair de dentro da área dos botões
+            const maxTop = container.clientHeight - btnNao.clientHeight;
+            const maxLeft = container.clientWidth - btnNao.clientWidth;
+
+            // Gera posições aleatórias
+            const randomTop = Math.floor(Math.random() * maxTop);
+            const randomLeft = Math.floor(Math.random() * maxLeft);
+
+            // Aplica as novas coordenadas
+            btnNao.style.top = randomTop + 'px';
+            btnNao.style.left = randomLeft + 'px';
+        }
+
+        // Exibe a tela de sucesso
+        function aceitou() {
+            document.getElementById('successScreen').style.display = 'flex';
+        }
+
+        // Criação de corações pretos/escuros flutuando ao fundo igual ao vídeo
+        const heartsBg = document.getElementById('heartsBg');
+        const heartEmojis = ['🖤', '🖤', '🖤']; 
+
+        for (let i = 0; i < 12; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = Math.floor(Math.random() * 15 + 15) + 'px';
+            heartsBg.appendChild(heart);
+        }
+    </script>
+</body>
+</html>
